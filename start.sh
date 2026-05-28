@@ -1,19 +1,18 @@
 #!/bin/bash
-set -e
 
-# Laravel necesita un .env aunque sea vacío (los valores reales vienen de Railway)
+# .env vacío para que Laravel no falle al iniciar
 touch .env
 
-# Migraciones
-php artisan migrate --force
+# Migraciones — si fallan, continuamos igual
+php artisan migrate --force || true
 
-# Enlace de storage
+# Storage link
 php artisan storage:link --force 2>/dev/null || true
 
-# Cache para producción
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# Cache de producción — ignorar errores
+php artisan config:cache || true
+php artisan route:cache  || true
+php artisan view:cache   || true
 
-# Servidor
+# Servidor en el puerto que Railway asigna
 exec php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
