@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => rtrim(preg_replace('/[\r\n\t\s]+/', '', env('APP_URL', 'http://localhost')) ?: 'http://localhost', '/'),
 
     /*
     |--------------------------------------------------------------------------

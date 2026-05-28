@@ -3,8 +3,13 @@
 # .env vacío — los valores reales vienen de Railway env vars
 touch .env
 
+echo "==> PHP: $(php -v | head -1)"
+echo "==> APP_URL: ${APP_URL:-<no definido>}"
+echo "==> APP_KEY presente: $([ -n "$APP_KEY" ] && echo SI || echo NO)"
+echo "==> DB_HOST: ${DB_HOST:-<no definido>}"
+
 echo "==> Descubriendo paquetes..."
-php artisan package:discover --ansi 2>/dev/null || true
+php artisan package:discover --ansi || true
 
 echo "==> Limpiando caches viejos..."
 php artisan config:clear  2>/dev/null || true
