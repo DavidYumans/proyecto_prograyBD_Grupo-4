@@ -3,6 +3,9 @@
 # .env vacío — los valores reales vienen de Railway env vars
 touch .env
 
+echo "==> Descubriendo paquetes..."
+php artisan package:discover --ansi 2>/dev/null || true
+
 echo "==> Limpiando caches viejos..."
 php artisan config:clear  2>/dev/null || true
 php artisan cache:clear   2>/dev/null || true
