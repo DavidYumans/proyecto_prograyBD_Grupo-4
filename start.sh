@@ -11,6 +11,9 @@ touch .env
 echo "==> Migraciones..."
 php artisan migrate --force 2>&1 || echo "WARN: migrate falló"
 
+echo "==> Asegurando columnas en orders..."
+php artisan app:ensure-order-columns 2>&1 || echo "WARN: ensure-order-columns falló"
+
 echo "==> Creando usuario admin..."
 php artisan db:seed --class=AdminUserSeeder --force 2>&1 || echo "WARN: admin seeder falló"
 
