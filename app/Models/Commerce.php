@@ -54,13 +54,19 @@ class Commerce extends Model
     public function getLogoUrlAttribute(): ?string
     {
         if (!$this->logo) return null;
-        return str_starts_with($this->logo, 'http') ? $this->logo : asset('storage/' . $this->logo);
+        if (str_starts_with($this->logo, 'http')) return $this->logo;
+        return \Illuminate\Support\Facades\Storage::disk('public')->exists($this->logo)
+            ? asset('storage/' . $this->logo)
+            : null;
     }
 
     public function getBannerUrlAttribute(): ?string
     {
         if (!$this->banner) return null;
-        return str_starts_with($this->banner, 'http') ? $this->banner : asset('storage/' . $this->banner);
+        if (str_starts_with($this->banner, 'http')) return $this->banner;
+        return \Illuminate\Support\Facades\Storage::disk('public')->exists($this->banner)
+            ? asset('storage/' . $this->banner)
+            : null;
     }
 
     public function isActivo(): bool

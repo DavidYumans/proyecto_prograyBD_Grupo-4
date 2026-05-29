@@ -38,7 +38,10 @@ class Product extends Model
     public function getImageUrlAttribute(): ?string
     {
         if (!$this->image) return null;
-        return str_starts_with($this->image, 'http') ? $this->image : asset('storage/' . $this->image);
+        if (str_starts_with($this->image, 'http')) return $this->image;
+        return \Illuminate\Support\Facades\Storage::disk('public')->exists($this->image)
+            ? asset('storage/' . $this->image)
+            : null;
     }
 
     public function finalPrice(): float
