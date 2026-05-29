@@ -100,8 +100,8 @@
                             <div class="flex items-center gap-4 px-6 py-4">
                                 {{-- Imagen --}}
                                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-100 flex items-center justify-center shrink-0">
-                                    @if($item->product?->image)
-                                        <img src="{{ asset('storage/' . $item->product->image) }}"
+                                    @if($item->product?->image_url)
+                                        <img src="{{ $item->product->image_url }}"
                                              class="w-12 h-12 rounded-xl object-cover" alt="{{ $item->product->name }}">
                                     @else
                                         <svg class="w-5 h-5 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

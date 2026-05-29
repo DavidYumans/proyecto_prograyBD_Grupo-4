@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Comerciante;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Commerce;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class CommerceController extends Controller
 {
+    public function __construct(private ImageUploadService $images) {}
+
     public function create()
     {
         $user = auth()->user();
@@ -57,15 +59,8 @@ class CommerceController extends Controller
             'banner.max'           => 'El banner no puede superar los 4 MB.',
         ]);
 
-        $logoPath = null;
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('logos', 'public');
-        }
-
-        $bannerPath = null;
-        if ($request->hasFile('banner')) {
-            $bannerPath = $request->file('banner')->store('banners', 'public');
-        }
+        $logoPath   = $request->hasFile('logo')   ? $this->images->upload($request->file('logo'),   'logos')   : null;
+        $bannerPath = $request->hasFile('banner') ? $this->images->upload($request->file('banner'), 'banners') : null;
 
         Commerce::create([
             'user_id'     => $user->id,
@@ -79,9 +74,7 @@ class CommerceController extends Controller
             'status'      => 'activo',
         ]);
 
-        $user->update([
-            'role' => 'comerciante',
-        ]);
+        $user->update(['role' => 'comerciante']);
 
         return redirect()
             ->route('comerciante.dashboard')
@@ -90,7 +83,7 @@ class CommerceController extends Controller
 
     public function edit()
     {
-        $user = auth()->user();
+        $user     = auth()->user();
         $commerce = $user->commerce;
 
         if (! $commerce) {
@@ -104,7 +97,7 @@ class CommerceController extends Controller
 
     public function update(Request $request)
     {
-        $user = auth()->user();
+        $user     = auth()->user();
         $commerce = $user->commerce;
 
         if (! $commerce) {
@@ -131,18 +124,17 @@ class CommerceController extends Controller
             'banner.max'           => 'El banner no puede superar los 4 MB.',
         ]);
 
+        // Never overwrite existing images unless a new file is actually uploaded
+        unset($validated['logo'], $validated['banner']);
+
         if ($request->hasFile('logo')) {
-            if ($commerce->logo) {
-                Storage::disk('public')->delete($commerce->logo);
-            }
-            $validated['logo'] = $request->file('logo')->store('logos', 'public');
+            if ($commerce->logo) $this->images->delete($commerce->logo);
+            $validated['logo'] = $this->images->upload($request->file('logo'), 'logos');
         }
 
         if ($request->hasFile('banner')) {
-            if ($commerce->banner) {
-                Storage::disk('public')->delete($commerce->banner);
-            }
-            $validated['banner'] = $request->file('banner')->store('banners', 'public');
+            if ($commerce->banner) $this->images->delete($commerce->banner);
+            $validated['banner'] = $this->images->upload($request->file('banner'), 'banners');
         }
 
         $commerce->update($validated);

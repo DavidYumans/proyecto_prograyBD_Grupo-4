@@ -69,11 +69,11 @@
                     Imagen del producto
                 </label>
 
-                @if ($product->image)
+                @if ($product->image_url)
                     <div class="mb-3">
                         <p class="text-xs text-gray-500 mb-2">Imagen actual:</p>
 
-                        <img src="{{ asset('storage/' . $product->image) }}"
+                        <img src="{{ $product->image_url }}"
                              alt="{{ $product->name }}"
                              class="w-32 h-32 object-cover rounded-lg border">
                     </div>

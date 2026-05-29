@@ -51,6 +51,18 @@ class Commerce extends Model
         return $this->hasMany(User::class)->where('role', 'repartidor');
     }
 
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (!$this->logo) return null;
+        return str_starts_with($this->logo, 'http') ? $this->logo : asset('storage/' . $this->logo);
+    }
+
+    public function getBannerUrlAttribute(): ?string
+    {
+        if (!$this->banner) return null;
+        return str_starts_with($this->banner, 'http') ? $this->banner : asset('storage/' . $this->banner);
+    }
+
     public function isActivo(): bool
     {
         return $this->status === 'activo';

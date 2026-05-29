@@ -156,8 +156,8 @@
 
                                     {{-- Imagen --}}
                                     <div class="shrink-0">
-                                        @if($item->product->image)
-                                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                        @if($item->product->image_url)
+                                            <img src="{{ $item->product->image_url }}"
                                                  alt="{{ $item->product->name }}"
                                                  class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-2xl border border-gray-100 shadow-sm group-hover:scale-105 transition-transform duration-300">
                                         @else

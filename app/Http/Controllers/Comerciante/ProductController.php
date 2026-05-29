@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Comerciante;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function __construct(private ImageUploadService $images) {}
+
     public function index()
     {
         $commerce = auth()->user()->commerce;
@@ -69,11 +71,9 @@ class ProductController extends Controller
             'status.required' => 'El estado es obligatorio.',
         ]);
 
-        $imagePath = null;
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-        }
+        $imagePath = $request->hasFile('image')
+            ? $this->images->upload($request->file('image'), 'products')
+            : null;
 
         $commerce->products()->create([
             'name' => $validated['name'],
@@ -122,11 +122,8 @@ class ProductController extends Controller
         $imagePath = $product->image;
 
         if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
-
-            $imagePath = $request->file('image')->store('products', 'public');
+            if ($product->image) $this->images->delete($product->image);
+            $imagePath = $this->images->upload($request->file('image'), 'products');
         }
 
         $product->update([
@@ -152,9 +149,7 @@ class ProductController extends Controller
             abort(403, 'No tienes permiso para eliminar este producto.');
         }
 
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
+        if ($product->image) $this->images->delete($product->image);
 
         $product->delete();
 

@@ -183,9 +183,9 @@
 
 {{-- ════════════════════════════ HERO / BANNER ════════════════════════════ --}}
 <section class="relative overflow-hidden">
-    @if ($commerce->banner)
+    @if ($commerce->banner_url)
         <div class="h-64 sm:h-80 relative">
-            <img src="{{ asset('storage/' . $commerce->banner) }}" alt="{{ $commerce->name }}" class="w-full h-full object-cover">
+            <img src="{{ $commerce->banner_url }}" alt="{{ $commerce->name }}" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
         </div>
     @else
@@ -210,8 +210,8 @@
 
                 {{-- Avatar --}}
                 <div class="shrink-0">
-                    @if ($commerce->logo)
-                        <img src="{{ asset('storage/' . $commerce->logo) }}" alt="{{ $commerce->name }}"
+                    @if ($commerce->logo_url)
+                        <img src="{{ $commerce->logo_url }}" alt="{{ $commerce->name }}"
                              class="w-20 h-20 rounded-2xl object-cover shadow-lg ring-4 ring-orange-100">
                     @else
                         <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white font-black text-3xl shadow-lg shadow-orange-200 ring-4 ring-orange-100">
@@ -381,8 +381,8 @@
 
                     {{-- Image area --}}
                     <div class="relative h-44 bg-gradient-to-br from-orange-50 to-amber-50 overflow-hidden">
-                        @if ($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}"
+                        @if ($product->image_url)
+                            <img src="{{ $product->image_url }}"
                                  alt="{{ $product->name }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         @else

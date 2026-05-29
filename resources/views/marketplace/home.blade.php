@@ -633,8 +633,8 @@
                                     hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-200/80 hover:border-gray-200
                                     transition-all duration-300 group">
                         <div class="h-48 relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100">
-                            @if ($commerce->banner)
-                                <img src="{{ asset('storage/' . $commerce->banner) }}" alt="{{ $commerce->name }}"
+                            @if ($commerce->banner_url)
+                                <img src="{{ $commerce->banner_url }}" alt="{{ $commerce->name }}"
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             @else
                                 <div class="w-full h-full flex items-center justify-center">

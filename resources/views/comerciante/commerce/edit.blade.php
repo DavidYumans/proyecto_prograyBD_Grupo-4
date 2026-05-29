@@ -58,8 +58,8 @@
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="flex flex-col sm:flex-row sm:items-center gap-4">
             <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-xl shadow-orange-500/30 shrink-0">
-                @if ($commerce->logo)
-                    <img src="{{ asset('storage/' . $commerce->logo) }}" alt="{{ $commerce->name }}" class="w-full h-full object-cover rounded-2xl">
+                @if ($commerce->logo_url)
+                    <img src="{{ $commerce->logo_url }}" alt="{{ $commerce->name }}" class="w-full h-full object-cover rounded-2xl">
                 @else
                     <span class="text-white font-black text-2xl">{{ strtoupper(substr($commerce->name, 0, 1)) }}</span>
                 @endif
@@ -79,8 +79,8 @@
       x-data="{
         name: '{{ addslashes(old('name', $commerce->name)) }}',
         description: '{{ addslashes(old('description', $commerce->description ?? '')) }}',
-        logoUrl: {{ $commerce->logo ? '\''.asset('storage/'.$commerce->logo).'\'' : 'null' }},
-        bannerUrl: {{ $commerce->banner ? '\''.asset('storage/'.$commerce->banner).'\'' : 'null' }},
+        logoUrl: {{ $commerce->logo_url ? '\''.e($commerce->logo_url).'\'' : 'null' }},
+        bannerUrl: {{ $commerce->banner_url ? '\''.e($commerce->banner_url).'\'' : 'null' }},
         handleLogo(e) {
           const file = e.target.files[0];
           this.logoUrl = file ? URL.createObjectURL(file) : this.logoUrl;

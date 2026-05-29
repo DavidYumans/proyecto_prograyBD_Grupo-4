@@ -35,6 +35,12 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image) return null;
+        return str_starts_with($this->image, 'http') ? $this->image : asset('storage/' . $this->image);
+    }
+
     public function finalPrice(): float
     {
         if ($this->discount_percentage > 0) {
