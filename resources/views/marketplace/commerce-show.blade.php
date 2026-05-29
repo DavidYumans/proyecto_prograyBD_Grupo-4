@@ -183,25 +183,26 @@
 
 {{-- ════════════════════════════ HERO / BANNER ════════════════════════════ --}}
 <section class="relative overflow-hidden">
-    @if ($commerce->banner_url)
-        <div class="h-64 sm:h-80 relative">
-            <img src="{{ $commerce->banner_url }}" alt="{{ $commerce->name }}" class="w-full h-full object-cover">
+    {{-- Banner: always render both, hide fallback via JS if image loads OK --}}
+    <div class="h-64 sm:h-80 relative overflow-hidden">
+        @if ($commerce->banner_url)
+            <img src="{{ $commerce->banner_url }}" alt="{{ $commerce->name }}"
+                 id="commerce-banner-img"
+                 class="w-full h-full object-cover"
+                 onerror="this.style.display='none';document.getElementById('commerce-banner-fallback').style.display='flex'">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-        </div>
-    @else
-        <div class="h-64 sm:h-80 bg-gradient-to-br from-orange-500 via-orange-600 to-amber-600 relative overflow-hidden">
-            {{-- dot pattern --}}
+        @endif
+        <div id="commerce-banner-fallback"
+             class="absolute inset-0 bg-gradient-to-br from-orange-500 via-orange-600 to-amber-600 {{ $commerce->banner_url ? 'hidden' : 'flex' }} items-center justify-center"
+             style="{{ $commerce->banner_url ? 'display:none' : '' }}">
             <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,#fff 1.5px,transparent 1.5px);background-size:28px 28px"></div>
-            {{-- floating blobs --}}
             <div class="absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
             <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-amber-400/20 rounded-full blur-2xl"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-28 h-28 rounded-3xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-2xl">
-                    <span class="text-white font-black text-5xl leading-none drop-shadow-sm">{{ strtoupper(substr($commerce->name, 0, 1)) }}</span>
-                </div>
+            <div class="w-28 h-28 rounded-3xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-2xl">
+                <span class="text-white font-black text-5xl leading-none drop-shadow-sm">{{ strtoupper(substr($commerce->name, 0, 1)) }}</span>
             </div>
         </div>
-    @endif
+    </div>
 
     {{-- ── Commerce info card ── --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -210,14 +211,16 @@
 
                 {{-- Avatar --}}
                 <div class="shrink-0">
-                    @if ($commerce->logo_url)
-                        <img src="{{ $commerce->logo_url }}" alt="{{ $commerce->name }}"
-                             class="w-20 h-20 rounded-2xl object-cover shadow-lg ring-4 ring-orange-100">
-                    @else
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white font-black text-3xl shadow-lg shadow-orange-200 ring-4 ring-orange-100">
+                    <div class="w-20 h-20 rounded-2xl overflow-hidden shadow-lg ring-4 ring-orange-100 bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white font-black text-3xl">
+                        @if ($commerce->logo_url)
+                            <img src="{{ $commerce->logo_url }}" alt="{{ $commerce->name }}"
+                                 class="w-full h-full object-cover"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <span style="display:none" class="w-full h-full flex items-center justify-center">{{ strtoupper(substr($commerce->name, 0, 1)) }}</span>
+                        @else
                             {{ strtoupper(substr($commerce->name, 0, 1)) }}
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 </div>
 
                 {{-- Info --}}

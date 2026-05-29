@@ -635,16 +635,16 @@
                         <div class="h-48 relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100">
                             @if ($commerce->banner_url)
                                 <img src="{{ $commerce->banner_url }}" alt="{{ $commerce->name }}"
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            @else
-                                <div class="w-full h-full flex items-center justify-center">
-                                    <div class="text-center">
-                                        <div class="w-20 h-20 rounded-3xl bg-orange-200/50 flex items-center justify-center mx-auto mb-2">
-                                            <svg class="w-10 h-10 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                                        </div>
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            @endif
+                            <div class="w-full h-full flex items-center justify-center {{ $commerce->banner_url ? 'hidden' : '' }}" style="{{ $commerce->banner_url ? 'display:none' : '' }}">
+                                <div class="text-center">
+                                    <div class="w-20 h-20 rounded-3xl bg-orange-200/50 flex items-center justify-center mx-auto mb-2">
+                                        <svg class="w-10 h-10 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                             {{-- Overlay gradient on hover --}}
                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             @if($commerce->category)
@@ -658,8 +658,15 @@
 
                         <div class="p-6">
                             <div class="flex items-start gap-4 mb-4">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-orange-500/20 shrink-0 group-hover:scale-110 transition-transform duration-300">
-                                    {{ strtoupper(substr($commerce->name, 0, 1)) }}
+                                <div class="w-12 h-12 rounded-2xl overflow-hidden shadow-lg shadow-orange-500/20 shrink-0 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-black text-xl">
+                                    @if ($commerce->logo_url)
+                                        <img src="{{ $commerce->logo_url }}" alt="{{ $commerce->name }}"
+                                             class="w-full h-full object-cover"
+                                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                                        <span style="display:none" class="w-full h-full flex items-center justify-center text-white font-black text-xl">{{ strtoupper(substr($commerce->name, 0, 1)) }}</span>
+                                    @else
+                                        {{ strtoupper(substr($commerce->name, 0, 1)) }}
+                                    @endif
                                 </div>
                                 <div class="min-w-0 flex-1 pt-1">
                                     <h3 class="font-bold text-gray-900 text-lg leading-tight truncate">{{ $commerce->name }}</h3>
