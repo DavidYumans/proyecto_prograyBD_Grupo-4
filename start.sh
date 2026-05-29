@@ -11,6 +11,9 @@ touch .env
 echo "==> Migraciones..."
 php artisan migrate --force 2>&1 || echo "WARN: migrate falló"
 
+echo "==> Creando usuario admin..."
+php artisan db:seed --class=AdminUserSeeder --force 2>&1 || echo "WARN: admin seeder falló"
+
 echo "==> Storage link..."
 php artisan storage:link --force 2>/dev/null || true
 
