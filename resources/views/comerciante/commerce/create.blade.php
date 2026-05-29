@@ -103,9 +103,14 @@
         address: '{{ old('address') }}',
         phone: '{{ old('phone') }}',
         logoUrl: null,
+        bannerUrl: null,
         handleLogo(e) {
           const file = e.target.files[0];
           this.logoUrl = file ? URL.createObjectURL(file) : null;
+        },
+        handleBanner(e) {
+          const file = e.target.files[0];
+          this.bannerUrl = file ? URL.createObjectURL(file) : null;
         }
       }">
 
@@ -183,6 +188,48 @@
                             </div>
                         </div>
                         @error('logo')
+                            <p class="mt-2 flex items-center gap-1.5 text-sm text-red-600">
+                                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    {{-- Banner --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            Banner del comercio
+                            <span class="ml-1 text-xs font-normal text-gray-400">(opcional · JPG, PNG o WebP · máx. 4 MB · recomendado 1200×400 px)</span>
+                        </label>
+
+                        {{-- Preview wide --}}
+                        <div class="w-full h-32 rounded-xl border-2 border-dashed overflow-hidden mb-3 flex items-center justify-center transition-all duration-300 relative"
+                             :class="bannerUrl ? 'border-orange-300 bg-white' : 'border-gray-200 bg-gray-50'">
+                            <img x-show="bannerUrl" :src="bannerUrl" alt="Banner preview"
+                                 class="w-full h-full object-cover">
+                            <div x-show="!bannerUrl" class="text-center">
+                                <svg class="w-10 h-10 text-gray-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p class="text-xs text-gray-400 mt-1">Vista previa del banner</p>
+                            </div>
+                        </div>
+
+                        <label for="banner"
+                               class="flex items-center justify-center gap-3 w-full py-3.5 rounded-xl border-2 border-dashed cursor-pointer transition-all duration-200"
+                               :class="bannerUrl ? 'border-orange-300 bg-orange-50/50' : 'border-gray-200 bg-gray-50 hover:border-orange-300 hover:bg-orange-50/30'">
+                            <svg class="w-5 h-5 transition-colors" :class="bannerUrl ? 'text-orange-400' : 'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <span class="text-sm font-semibold transition-colors" :class="bannerUrl ? 'text-orange-600' : 'text-gray-600'">
+                                <span x-show="!bannerUrl">Seleccionar banner</span>
+                                <span x-show="bannerUrl">Cambiar banner</span>
+                            </span>
+                            <span class="text-xs text-gray-400">o arrastra y suelta aquí</span>
+                            <input id="banner" name="banner" type="file"
+                                   accept="image/jpg,image/jpeg,image/png,image/webp"
+                                   class="hidden"
+                                   @change="handleBanner($event)">
+                        </label>
+                        @error('banner')
                             <p class="mt-2 flex items-center gap-1.5 text-sm text-red-600">
                                 <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
                                 {{ $message }}
@@ -385,9 +432,10 @@
 
                         <div class="rounded-2xl border-2 border-dashed border-gray-200 overflow-hidden transition-all duration-300"
                              :class="name ? 'border-orange-200' : 'border-gray-200'">
-                            {{-- Banner placeholder --}}
+                            {{-- Banner --}}
                             <div class="h-32 bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 flex items-center justify-center relative overflow-hidden">
-                                <div class="text-center">
+                                <img x-show="bannerUrl" :src="bannerUrl" alt="Banner" class="absolute inset-0 w-full h-full object-cover">
+                                <div x-show="!bannerUrl" class="text-center">
                                     <svg class="w-10 h-10 text-orange-200 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                     <p class="text-xs text-orange-300 mt-1">Banner del comercio</p>
                                 </div>
@@ -451,7 +499,7 @@
                             $tips = [
                                 ['icon'=>'✍️','text'=>'Usa un nombre claro y fácil de recordar.'],
                                 ['icon'=>'📝','text'=>'Una buena descripción genera más visitas.'],
-                                ['icon'=>'📸','text'=>'Sube un banner atractivo desde tu panel.'],
+                                ['icon'=>'📸','text'=>'Un banner atractivo genera más confianza y visitas.'],
                                 ['icon'=>'📞','text'=>'El teléfono ayuda a los clientes a contactarte directamente.'],
                                 ['icon'=>'📍','text'=>'La dirección aumenta la confianza del comprador.'],
                             ];

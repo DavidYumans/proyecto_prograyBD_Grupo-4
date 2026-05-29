@@ -44,18 +44,27 @@ class CommerceController extends Controller
             'address'     => ['nullable', 'string', 'max:255'],
             'phone'       => ['nullable', 'string', 'max:30'],
             'logo'        => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'banner'      => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ], [
-            'name.required'       => 'El nombre del comercio es obligatorio.',
+            'name.required'        => 'El nombre del comercio es obligatorio.',
             'category_id.required' => 'Debes seleccionar una categoría.',
-            'category_id.exists'  => 'La categoría seleccionada no es válida.',
-            'logo.image'          => 'El logo debe ser una imagen.',
-            'logo.mimes'          => 'El logo debe ser JPG, PNG o WebP.',
-            'logo.max'            => 'El logo no puede superar los 2 MB.',
+            'category_id.exists'   => 'La categoría seleccionada no es válida.',
+            'logo.image'           => 'El logo debe ser una imagen.',
+            'logo.mimes'           => 'El logo debe ser JPG, PNG o WebP.',
+            'logo.max'             => 'El logo no puede superar los 2 MB.',
+            'banner.image'         => 'El banner debe ser una imagen.',
+            'banner.mimes'         => 'El banner debe ser JPG, PNG o WebP.',
+            'banner.max'           => 'El banner no puede superar los 4 MB.',
         ]);
 
         $logoPath = null;
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('logos', 'public');
+        }
+
+        $bannerPath = null;
+        if ($request->hasFile('banner')) {
+            $bannerPath = $request->file('banner')->store('banners', 'public');
         }
 
         Commerce::create([
@@ -66,6 +75,7 @@ class CommerceController extends Controller
             'address'     => $validated['address'] ?? null,
             'phone'       => $validated['phone'] ?? null,
             'logo'        => $logoPath,
+            'banner'      => $bannerPath,
             'status'      => 'activo',
         ]);
 
