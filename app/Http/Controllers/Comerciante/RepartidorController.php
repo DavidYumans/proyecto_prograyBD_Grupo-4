@@ -83,7 +83,7 @@ class RepartidorController extends Controller
     {
         $this->authorizeRepartidor($user);
 
-        $user->deliveryOrders()->update(['delivery_user_id' => null]);
+        $user->deliveryOrders()->update(['repartidor_id' => null]);
         $user->delete();
 
         return back()->with('success', 'Repartidor eliminado correctamente.');

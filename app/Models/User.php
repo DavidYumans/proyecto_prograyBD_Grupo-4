@@ -55,7 +55,12 @@ class User extends Authenticatable
 
     public function deliveryOrders()
     {
-        return $this->hasMany(Order::class, 'delivery_user_id');
+        return $this->hasMany(Order::class, 'repartidor_id');
+    }
+
+    public function deliveries()
+    {
+        return $this->hasMany(Order::class, 'repartidor_id');
     }
 
     public function siteRatings()

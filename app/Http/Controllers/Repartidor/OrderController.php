@@ -48,7 +48,7 @@ class OrderController extends Controller
 
     private function authorizeDeliveryOrder(Order $order): void
     {
-        if ($order->delivery_user_id !== auth()->id()) {
+        if ($order->repartidor_id !== auth()->id()) {
             abort(403, 'Este pedido no esta asignado a tu usuario.');
         }
     }

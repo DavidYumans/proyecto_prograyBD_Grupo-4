@@ -145,22 +145,22 @@
             @method('PATCH')
 
             <div class="md:col-span-2">
-                <label for="delivery_user_id" class="block text-sm font-medium text-gray-700 mb-1">
+                <label for="repartidor_id" class="block text-sm font-medium text-gray-700 mb-1">
                     Repartidor asignado
                 </label>
 
-                <select id="delivery_user_id"
-                        name="delivery_user_id"
+                <select id="repartidor_id"
+                        name="repartidor_id"
                         class="w-full rounded-lg border-gray-300 focus:border-slate-500 focus:ring-slate-500">
                     <option value="">Sin repartidor</option>
                     @foreach ($activeRepartidores as $repartidor)
-                        <option value="{{ $repartidor->id }}" {{ $order->delivery_user_id === $repartidor->id ? 'selected' : '' }}>
+                        <option value="{{ $repartidor->id }}" {{ $order->repartidor_id === $repartidor->id ? 'selected' : '' }}>
                             {{ $repartidor->name }}
                         </option>
                     @endforeach
                 </select>
 
-                @error('delivery_user_id')
+                @error('repartidor_id')
                 <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>

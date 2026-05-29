@@ -227,7 +227,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold
-                                                 {{ $order->delivery_user_id ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700' }}">
+                                                 {{ $order->repartidor_id ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700' }}">
                                         {{ $order->deliveryStatusLabel() }}
                                     </span>
                                 </td>
@@ -235,11 +235,11 @@
                                     <form id="assign-{{ $order->id }}" method="POST" action="{{ route('admin.delivery.assign', $order) }}">
                                         @csrf @method('PATCH')
                                         <div class="relative">
-                                            <select name="delivery_user_id"
+                                            <select name="repartidor_id"
                                                     class="w-full pr-8 pl-3 py-2 rounded-xl border-2 border-gray-200 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all appearance-none bg-white">
                                                 <option value="">Sin asignar</option>
                                                 @foreach ($activeRepartidores as $rep)
-                                                    <option value="{{ $rep->id }}" {{ $order->delivery_user_id === $rep->id ? 'selected' : '' }}>
+                                                    <option value="{{ $rep->id }}" {{ $order->repartidor_id === $rep->id ? 'selected' : '' }}>
                                                         {{ $rep->name }}
                                                     </option>
                                                 @endforeach

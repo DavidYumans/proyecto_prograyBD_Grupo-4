@@ -11,7 +11,7 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'delivery_user_id',
+        'repartidor_id',
         'coupon_id',
         'coupon_code',
         'subtotal',
@@ -19,6 +19,7 @@ class Order extends Model
         'total',
         'status',
         'delivery_status',
+        'admin_notes',
     ];
 
     public function user()
@@ -28,7 +29,7 @@ class Order extends Model
 
     public function deliveryUser()
     {
-        return $this->belongsTo(User::class, 'delivery_user_id');
+        return $this->belongsTo(User::class, 'repartidor_id');
     }
 
     public function items()

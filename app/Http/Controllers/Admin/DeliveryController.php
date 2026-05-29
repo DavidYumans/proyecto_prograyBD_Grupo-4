@@ -75,7 +75,7 @@ class DeliveryController extends Controller
             abort(403);
         }
 
-        $user->deliveryOrders()->update(['delivery_user_id' => null]);
+        $user->deliveryOrders()->update(['repartidor_id' => null]);
         $user->delete();
 
         return back()->with('success', 'Repartidor eliminado correctamente.');
@@ -84,10 +84,10 @@ class DeliveryController extends Controller
     public function assign(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'delivery_user_id' => ['nullable', 'exists:users,id'],
+            'repartidor_id' => ['nullable', 'exists:users,id'],
         ]);
 
-        $repartidorId = $validated['delivery_user_id'] ?? null;
+        $repartidorId = $validated['repartidor_id'] ?? null;
 
         if ($repartidorId) {
             $repartidor = User::where('role', 'repartidor')
@@ -95,12 +95,12 @@ class DeliveryController extends Controller
                 ->findOrFail($repartidorId);
 
             $order->update([
-                'delivery_user_id' => $repartidor->id,
+                'repartidor_id' => $repartidor->id,
                 'delivery_status' => $order->delivery_status === 'sin_asignar' ? 'asignado' : $order->delivery_status,
             ]);
         } else {
             $order->update([
-                'delivery_user_id' => null,
+                'repartidor_id' => null,
                 'delivery_status' => 'sin_asignar',
             ]);
         }

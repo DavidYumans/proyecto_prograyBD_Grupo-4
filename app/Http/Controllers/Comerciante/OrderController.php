@@ -121,10 +121,10 @@ class OrderController extends Controller
         }
 
         $validated = $request->validate([
-            'delivery_user_id' => ['nullable', 'exists:users,id'],
+            'repartidor_id' => ['nullable', 'exists:users,id'],
         ]);
 
-        $repartidorId = $validated['delivery_user_id'] ?? null;
+        $repartidorId = $validated['repartidor_id'] ?? null;
 
         if ($repartidorId) {
             $repartidor = User::where('role', 'repartidor')
@@ -132,12 +132,12 @@ class OrderController extends Controller
                 ->findOrFail($repartidorId);
 
             $order->update([
-                'delivery_user_id' => $repartidor->id,
+                'repartidor_id' => $repartidor->id,
                 'delivery_status' => $order->delivery_status === 'sin_asignar' ? 'asignado' : $order->delivery_status,
             ]);
         } else {
             $order->update([
-                'delivery_user_id' => null,
+                'repartidor_id' => null,
                 'delivery_status' => 'sin_asignar',
             ]);
         }
