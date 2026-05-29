@@ -9,17 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
     if (!targets.length) return;
 
+    const revealEl = (el) => {
+        el.classList.add('visible');
+        io.unobserve(el);
+    };
+
     const io = new IntersectionObserver(
-        (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    io.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+        (entries) => entries.forEach(e => e.isIntersecting && revealEl(e.target)),
+        { threshold: 0.05, rootMargin: '0px 0px 80px 0px' }
     );
 
     targets.forEach(el => io.observe(el));
+
+    // Immediately reveal everything currently in (or near) the viewport
+    requestAnimationFrame(() => {
+        targets.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight + 120) revealEl(el);
+        });
+    });
 });
