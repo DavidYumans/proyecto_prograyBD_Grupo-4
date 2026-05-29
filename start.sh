@@ -14,6 +14,9 @@ php artisan migrate --force 2>&1 || echo "WARN: migrate falló"
 echo "==> Storage link..."
 php artisan storage:link --force 2>/dev/null || true
 
+echo "==> Limpiando cache de vistas..."
+php artisan view:clear 2>/dev/null || true
+
 echo "==> Optimizando..."
 php artisan optimize 2>&1 || echo "WARN: optimize falló"
 
