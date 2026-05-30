@@ -8,26 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('conversations')) {
+            return;
+        }
+
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->foreignId('commerce_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->foreignId('order_id')
-                ->nullable()
-                ->constrained()
-                ->nullOnDelete();
-
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('commerce_id');
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->timestamp('last_message_at')->nullable();
-
             $table->timestamps();
-
             $table->unique(['user_id', 'commerce_id', 'order_id']);
         });
     }
